@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>{% block title %}GDPR{% endblock %}</title>
+    </head>
+    <body>
+        {% block content %}
+            {% block main %}
+                <h1>GDPR</h1>
+            {% endblock %}
+
+            {% block form %}
+                {{ form(form) }}
+            {% endblock %}
+        {% endblock %}
+    </body>
+</html>

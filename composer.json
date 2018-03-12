@@ -1,0 +1,45 @@
+{
+    "name": "itk-dev/gdpr-bundle",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mikkel Ricky",
+            "email": "rimi@aarhus.dk"
+        }
+    ],
+    "require": {
+        "symfony/symfony": "^3.0"
+		},
+    "autoload": {
+        "psr-4": {
+            "ItkDev\\GDPRBundle\\": ""
+        }
+		},
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.2",
+        "friendsofphp/php-cs-fixer": "^2.10"
+    },
+    "scripts": {
+        "check-coding-standards/php-cs-fixer": [
+            "php -n vendor/bin/php-cs-fixer --config=.php_cs.dist fix --dry-run"
+        ],
+        "check-coding-standards/phpcs": [
+            "vendor/bin/phpcs --standard=phpcs.xml.dist"
+        ],
+        "check-coding-standards": [
+            "@check-coding-standards/php-cs-fixer",
+            "@check-coding-standards/phpcs"
+        ],
+        "fix-coding-standards/php-cs-fixer": [
+            "php -n vendor/bin/php-cs-fixer --config=.php_cs.dist fix"
+        ],
+        "fix-coding-standards/phpcs": [
+            "vendor/bin/phpcbf --standard=phpcs.xml.dist"
+        ],
+        "fix-coding-standards": [
+            "@fix-coding-standards/php-cs-fixer",
+            "@fix-coding-standards/phpcs"
+        ]
+    }
+}

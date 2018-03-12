@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="dokk1">
+    <description>PHP CodeSniffer configuration for itk-dev/gdpr-bundle</description>
+
+    <file>ItkDevGDPRBundle.php</file>
+    <file>Controller</file>
+    <file>DependencyInjection</file>
+    <file>EventSubscriber</file>
+    <file>Resources</file>
+
+    <!-- Show progress -->
+    <arg value="p"/>
+
+    <rule ref="vendor/squizlabs/php_codesniffer/src/Standards/PSR2"/>
+</ruleset>
