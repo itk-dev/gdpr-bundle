@@ -18,6 +18,14 @@ public function registerBundles() {
 }
 ```
 
+Add routes in `app/config/routing.yml', say:
+
+```yaml
+gdpr_bundle:
+    resource: '@ItkDevGDPRBundle/Resources/config/routing.xml'
+    prefix: /gdpr
+```
+
 Check default bundle configuration
 
 ```sh

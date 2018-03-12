@@ -44,9 +44,6 @@ class GDPRController extends Controller
         $this->userManager = $userManager;
         $this->accessor = $accessor;
         $this->configuration = $configuration;
-        header('Content-type: text/plain');
-        echo var_export($configuration, true);
-        die(__FILE__.':'.__LINE__.':'.__METHOD__);
     }
 
     public function showAction(Request $request)
