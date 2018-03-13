@@ -10,14 +10,14 @@
 
 namespace ItkDev\GDPRBundle\EventSubscriber;
 
-use AppBundle\Entity\User;
+use FOS\UserBundle\Model\User;
+use ItkDev\GDPRBundle\Helper\GDPRHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 class GDPRSubscriber implements EventSubscriberInterface
@@ -28,22 +28,17 @@ class GDPRSubscriber implements EventSubscriberInterface
     /** @var TokenStorage */
     private $tokenStorage;
 
-    /** @var RouterInterface */
-    private $router;
-
-    /** @var array */
-    private $configuration;
+    /** @var \ItkDev\GDPRBundle\Helper\GDPRHelper */
+    private $helper;
 
     public function __construct(
         RequestStack $requestStack,
         TokenStorage $tokenStorage,
-        RouterInterface $router,
-        array $configuration
+        GDPRHelper $helper
     ) {
         $this->requestStack = $requestStack;
         $this->tokenStorage = $tokenStorage;
-        $this->router = $router;
-        $this->configuration = $configuration;
+        $this->helper = $helper;
     }
 
     public static function getSubscribedEvents()
@@ -72,27 +67,16 @@ class GDPRSubscriber implements EventSubscriberInterface
         }
 
         $user = $token->getUser();
-        if ($user instanceof User && null === $user->getGdprAcceptedAt()) {
-            $redirectUrl = null;
-            if (isset($this->configuration['accept_route'])) {
-                $routeName = $this->configuration['accept_route'];
-                $routeParameters = isset($this->configuration['accept_route_parameters'])
-                    ? $this->configuration['accept_route_parameters'] : [];
-                $redirectUrl = $this->router->generate($routeName, $routeParameters);
-            } elseif (isset($this->configuration['accept_url'])) {
-                $redirectUrl = $this->configuration['accept_url'];
-            }
-
-            if (null === $redirectUrl) {
-                throw new \RuntimeException('GDPR not configured correctly.');
-            }
+        if ($user instanceof User && !$this->helper->isGDPRAccepted($user)) {
+            $redirectUrl = $this->helper->getRedirectUrl();
 
             $currentPath = $request->getPathInfo();
             $redirectInfo = parse_url($redirectUrl);
 
-            $onRedirectUrl = $redirectInfo['path'] === $currentPath;
+            // Only redirect if not already on redirect target path.
+            $doRedirect = $redirectInfo['path'] !== $currentPath;
 
-            if (!$onRedirectUrl) {
+            if ($doRedirect) {
                 // Add current url to redirect url.
                 $referrer = $request->getPathInfo();
                 if (null !== $request->getQueryString()) {

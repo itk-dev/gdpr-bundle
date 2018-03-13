@@ -10,14 +10,12 @@
 
 namespace ItkDev\GDPRBundle\Controller;
 
-use AppBundle\Service\UserManager;
-use FOS\UserBundle\Model\UserManagerInterface;
+use ItkDev\GDPRBundle\Helper\GDPRHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class GDPRController extends Controller
@@ -25,25 +23,15 @@ class GDPRController extends Controller
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
-    /** @var UserManager */
-    private $userManager;
-
-    /** @var PropertyAccessor */
-    private $accessor;
-
-    /** @var array */
-    private $configuration;
+    /** @var \ItkDev\GDPRBundle\Helper\GDPRHelper */
+    private $helper;
 
     public function __construct(
         TokenStorageInterface $tokenStorage,
-        UserManagerInterface $userManager,
-        PropertyAccessor $accessor,
-        array $configuration
+        GDPRHelper $helper
     ) {
         $this->tokenStorage = $tokenStorage;
-        $this->userManager = $userManager;
-        $this->accessor = $accessor;
-        $this->configuration = $configuration;
+        $this->helper = $helper;
     }
 
     public function showAction(Request $request)
@@ -63,11 +51,7 @@ class GDPRController extends Controller
             $token = $this->tokenStorage->getToken();
             if (null !== $token) {
                 $user = $token->getUser();
-                $property = $this->configuration['user_gdpr_property'];
-                $value = new \DateTime();
-                $this->accessor->setValue($user, $property, $value);
-                $user->setGdprAcceptedAt(new \DateTime());
-                $this->userManager->updateUser($user);
+                $this->helper->setGDPRAccepted($user);
 
                 $referrer = $form->get('referrer')->getData();
 

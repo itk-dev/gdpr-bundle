@@ -10,8 +10,7 @@
 
 namespace ItkDev\GDPRBundle\DependencyInjection;
 
-use ItkDev\GDPRBundle\Controller\GDPRController;
-use ItkDev\GDPRBundle\EventSubscriber\GDPRSubscriber;
+use ItkDev\GDPRBundle\Helper\GDPRHelper;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
@@ -35,10 +34,7 @@ class ItkDevGDPRExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $definition = $container->getDefinition(GDPRSubscriber::class);
-        $definition->replaceArgument('$configuration', $config);
-
-        $definition = $container->getDefinition(GDPRController::class);
+        $definition = $container->getDefinition(GDPRHelper::class);
         $definition->replaceArgument('$configuration', $config);
     }
 }

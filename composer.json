@@ -9,7 +9,8 @@
         }
     ],
     "require": {
-        "symfony/symfony": "^3.0"
+        "symfony/symfony": "^3.0",
+        "friendsofsymfony/user-bundle": "^2.1"
 		},
     "autoload": {
         "psr-4": {

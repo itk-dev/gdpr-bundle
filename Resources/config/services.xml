@@ -5,19 +5,23 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
+        <service id="ItkDev\GDPRBundle\Helper\GDPRHelper">
+            <argument key="$userManager" id="fos_user.user_manager" type="service"/>
+            <argument key="$router" id="router" type="service"/>
+            <argument key="$accessor" id="property_accessor" type="service"/>
+            <argument key="$configuration"/>
+        </service>
+
         <service id="ItkDev\GDPRBundle\EventSubscriber\GDPRSubscriber">
             <argument key="$requestStack" id="request_stack" type="service"/>
             <argument key="$tokenStorage" id="security.token_storage" type="service"/>
-            <argument key="$router" id="router" type="service"/>
-            <argument key="$configuration"/>
+            <argument key="$helper" id="ItkDev\GDPRBundle\Helper\GDPRHelper" type="service"/>
             <tag name="kernel.event_subscriber"/>
         </service>
 
         <service id="ItkDev\GDPRBundle\Controller\GDPRController">
             <argument key="$tokenStorage" id="security.token_storage" type="service"/>
-            <argument key="$userManager" id="fos_user.user_manager" type="service"/>
-            <argument key="$accessor" id="property_accessor" type="service"/>
-            <argument key="$configuration"/>
+            <argument key="$helper" id="ItkDev\GDPRBundle\Helper\GDPRHelper" type="service"/>
         </service>
     </services>
 </container>
