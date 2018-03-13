@@ -61,8 +61,13 @@ class GDPRSubscriber implements EventSubscriberInterface
         }
 
         $request = $this->requestStack->getCurrentRequest();
+        if (null === $request) {
+            return;
+        }
 
-        if (null === $request || 'GET' !== $request->getMethod()) {
+        // Skip check on gdpr routes (user must be able to perform a request
+        // that saves his accept of GDPR).
+        if (in_array($request->get('_route'), ['itk_dev_gdpr_show', 'itk_dev_gdpr_accept'], true)) {
             return;
         }
 
