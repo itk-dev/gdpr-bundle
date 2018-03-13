@@ -10,10 +10,10 @@ Enable the bundle in `app/AppKernel.php`:
 
 ```php
 public function registerBundles() {
-	$bundles = [
-		// …
+    $bundles = [
+        // …
         new ItkDev\GDPRBundle\ItkDevGDPRBundle(),
-	];
+    ];
     // …
 }
 ```
