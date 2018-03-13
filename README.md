@@ -3,7 +3,7 @@
 ## Installation
 
 ```sh
-composer require itk-dev/gdpr-bundle "^1.0"
+composer require itk-dev/gdpr-bundle dev-master
 ```
 
 Enable the bundle in `app/AppKernel.php`:
