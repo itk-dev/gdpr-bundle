@@ -32,4 +32,5 @@ Check default bundle configuration
 bin/console config:dump-reference ItkDevGDPRBundle
 ```
 
-If the default configuration do not match your setup it can be modified in `app/config/config.yml`.
+If the default configuration does not match your setup it can be
+modified in `app/config/config.yml`.
